@@ -32,7 +32,7 @@ unsigned char rxBuf[8];
 
 //NeoPixels
 #define PIN 6
-#define NUM_LEDS 16
+#define NUM_LEDS 8
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, PIN, NEO_GRBW + NEO_KHZ800);
 //full brightness
 uint32_t r = strip.Color  (200, 0, 0, 0);
@@ -232,117 +232,52 @@ void dimmer (void) {
 
 void leds(void) {
 
-  if (vehicleRPM > 0 && vehicleRPM < (RPMno - 1000) )
+  if (vehicleRPM > 0 && vehicleRPM < (RPMno + 500) )
   {
     strip.fill(o);
     ledStatus = 0;
   }
 
-  if (vehicleRPM >= (RPMno - 1000) && vehicleRPM < (RPMno - 500) )
+  if (vehicleRPM >= (RPMno + 500) && vehicleRPM < (RPMno + 583) )
   {
-    strip.fill(g, 15);
-    ledStatus = 15;
-  }
-
-  if (vehicleRPM >= (RPMno - 500) && vehicleRPM < RPMno )
-  {
-    strip.fill(g, 14);
-    ledStatus = 14;
-  }
-
-  if (vehicleRPM >= (RPMno) && vehicleRPM < (RPMno + 71))
-  {
-    strip.fill(b, 13);
-    ledStatus = 13;
-  }
-
-  if (vehicleRPM >= (RPMno + 71) && vehicleRPM < (RPMno + 143))
-  {
-    strip.fill(b, 12);
-    ledStatus = 12;
-  }
-
-  if (vehicleRPM >= (RPMno + 143) && vehicleRPM < (RPMno + 214))
-  {
-    strip.fill(b, 11);
-    ledStatus = 11;
-  }
-
-  if (vehicleRPM >= (RPMno + 214) && vehicleRPM < (RPMno + 28))
-  {
-    strip.fill(b, 10);
-    ledStatus = 10;
-  }
-
-  if (vehicleRPM >= (RPMno + 286) && vehicleRPM < (RPMno + 357))
-  {
-    strip.fill(b, 9);
-    ledStatus = 9;
-  }
-
-  if (vehicleRPM >= (RPMno + 357) && vehicleRPM < (RPMno + 429))
-  {
-    strip.fill(b, 8);
-    ledStatus = 8;
-  }
-
-  if (vehicleRPM >= (RPMno + 429) && vehicleRPM < (RPMno + 500))
-  {
-    strip.fill(b, 7);
+    strip.fill(r, 5);
     ledStatus = 7;
   }
 
-  if (vehicleRPM >= (RPMno + 500) && vehicleRPM < (RPMno + 571))
+  if (vehicleRPM >= (RPMno + 583) && vehicleRPM < (RPMno + 667)  )
   {
-    strip.fill(b, 6);
+    strip.fill(b, 4);
     ledStatus = 6;
   }
 
-  if (vehicleRPM >= (RPMno + 571) && vehicleRPM < (RPMno + 643))
+  if (vehicleRPM >= (RPMno + 667) && vehicleRPM < (RPMno + 750))
   {
-    strip.fill(r, 5);
+    strip.fill(b, 3);
     ledStatus = 5;
   }
-  if (vehicleRPM >= (RPMno + 643) && vehicleRPM < (RPMno + 714))
+
+  if (vehicleRPM >= (RPMno + 750) && vehicleRPM < (RPMno + 833))
   {
-    strip.fill(r, 4);
+    strip.fill(b, 2);
     ledStatus = 4;
   }
 
-  if (vehicleRPM >= (RPMno + 714) && vehicleRPM < (RPMno + 786))
+  if (vehicleRPM >= (RPMno + 833) && vehicleRPM < (RPMno + 917))
   {
-    strip.fill(r, 3);
+    strip.fill(b, 1);
     ledStatus = 3;
   }
 
-  if (vehicleRPM >= (RPMno + 786) && vehicleRPM < (RPMno + 857))
+  if (vehicleRPM >= (RPMno + 917) && vehicleRPM < (RPMno + 1000))
   {
-    strip.fill(r, 2);
+    strip.fill(b);
     ledStatus = 2;
-  }
-
-  if (vehicleRPM >= (RPMno + 857) && vehicleRPM < (RPMno + 929))
-  {
-    strip.fill(r, 1);
-    ledStatus = 1;
-  }
-
-  if (vehicleRPM >= (RPMno + 929) && vehicleRPM < (RPMno + 1000))
-  {
-    strip.fill(r);
-    ledStatus = 16;
   }
 
   if (vehicleRPM >= (RPMno + 1000) && vehicleRPM < (RPMno + 1500))
   {
     strip.fill(w);
-    ledStatus = 17;
-  }
-
-  if (vehicleRPM >= (RPMno + 1500) && vehicleRPM < (RPMno + 2000) )
-  {
-    strip.fill(o);
-    ledStatus = 0;
+    ledStatus = 1;
   }
 
   if (vehicleRPM > 10000)
@@ -360,117 +295,52 @@ void leds(void) {
 
 void ledsDimmed(void)  {
 
-  if (vehicleRPM > 0 && vehicleRPM < (RPMno - 1000) )
+  if (vehicleRPM > 0 && vehicleRPM < (RPMno + 500) )
   {
     strip.fill(o);
     ledStatus = 0;
   }
 
-  if (vehicleRPM >= (RPMno - 1000) && vehicleRPM < (RPMno - 500) )
+  if (vehicleRPM >= (RPMno + 500) && vehicleRPM < (RPMno + 583) )
   {
-    strip.fill(gd, 15);
-    ledStatus = 15;
-  }
-
-  if (vehicleRPM >= (RPMno - 500) && vehicleRPM < RPMno )
-  {
-    strip.fill(gd, 14);
-    ledStatus = 14;
-  }
-
-  if (vehicleRPM >= (RPMno) && vehicleRPM < (RPMno + 71))
-  {
-    strip.fill(bd, 13);
-    ledStatus = 13;
-  }
-
-  if (vehicleRPM >= (RPMno + 71) && vehicleRPM < (RPMno + 143))
-  {
-    strip.fill(bd, 12);
-    ledStatus = 12;
-  }
-
-  if (vehicleRPM >= (RPMno + 143) && vehicleRPM < (RPMno + 214))
-  {
-    strip.fill(bd, 11);
-    ledStatus = 11;
-  }
-
-  if (vehicleRPM >= (RPMno + 214) && vehicleRPM < (RPMno + 28))
-  {
-    strip.fill(bd, 10);
-    ledStatus = 10;
-  }
-
-  if (vehicleRPM >= (RPMno + 286) && vehicleRPM < (RPMno + 357))
-  {
-    strip.fill(bd, 9);
-    ledStatus = 9;
-  }
-
-  if (vehicleRPM >= (RPMno + 357) && vehicleRPM < (RPMno + 429))
-  {
-    strip.fill(bd, 8);
-    ledStatus = 8;
-  }
-
-  if (vehicleRPM >= (RPMno + 429) && vehicleRPM < (RPMno + 500))
-  {
-    strip.fill(bd, 7);
+    strip.fill(rd, 5);
     ledStatus = 7;
   }
 
-  if (vehicleRPM >= (RPMno + 500) && vehicleRPM < (RPMno + 571))
+  if (vehicleRPM >= (RPMno + 583) && vehicleRPM < (RPMno + 667)  )
   {
-    strip.fill(bd, 6);
+    strip.fill(bd, 4);
     ledStatus = 6;
   }
 
-  if (vehicleRPM >= (RPMno + 571) && vehicleRPM < (RPMno + 643))
+  if (vehicleRPM >= (RPMno + 667) && vehicleRPM < (RPMno + 750))
   {
-    strip.fill(rd, 5);
+    strip.fill(bd, 3);
     ledStatus = 5;
   }
-  if (vehicleRPM >= (RPMno + 643) && vehicleRPM < (RPMno + 714))
+
+  if (vehicleRPM >= (RPMno + 750) && vehicleRPM < (RPMno + 833))
   {
-    strip.fill(rd, 4);
+    strip.fill(bd, 2);
     ledStatus = 4;
   }
 
-  if (vehicleRPM >= (RPMno + 714) && vehicleRPM < (RPMno + 786))
+  if (vehicleRPM >= (RPMno + 833) && vehicleRPM < (RPMno + 917))
   {
-    strip.fill(rd, 3);
+    strip.fill(bd, 1);
     ledStatus = 3;
   }
 
-  if (vehicleRPM >= (RPMno + 786) && vehicleRPM < (RPMno + 857))
+  if (vehicleRPM >= (RPMno + 917) && vehicleRPM < (RPMno + 1000))
   {
-    strip.fill(rd, 2);
+    strip.fill(bd);
     ledStatus = 2;
-  }
-
-  if (vehicleRPM >= (RPMno + 857) && vehicleRPM < (RPMno + 929))
-  {
-    strip.fill(rd, 1);
-    ledStatus = 1;
-  }
-
-  if (vehicleRPM >= (RPMno + 929) && vehicleRPM < (RPMno + 1000))
-  {
-    strip.fill(rd);
-    ledStatus = 16;
   }
 
   if (vehicleRPM >= (RPMno + 1000) && vehicleRPM < (RPMno + 1500))
   {
     strip.fill(wd);
-    ledStatus = 17;
-  }
-
-  if (vehicleRPM >= (RPMno + 1500) && vehicleRPM < (RPMno + 2000) )
-  {
-    strip.fill(o);
-    ledStatus = 0;
+    ledStatus = 1;
   }
 
   if (vehicleRPM > 10000)
@@ -490,152 +360,54 @@ void ledStartup(void)
 {
   strip.fill(o);
   strip.show();
-  delay(space);
-
-  strip.fill(gd, 15);
-  strip.show();
-  delay(space);
-
-  strip.fill(gd, 14);
-  strip.show();
-  delay(space);
-
-  strip.fill(bd, 13);
-  strip.show();
-  delay(space);
-
-  strip.fill(bd, 12);
-  strip.show();
-  delay(space);
-
-  strip.fill(bd, 11);
-  strip.show();
-  delay(space);
-
-  strip.fill(bd, 10);
-  strip.show();
-  delay(space);
-
-  strip.fill(bd, 9);
-  strip.show();
-  delay(space);
-
-  strip.fill(bd, 8);
-  strip.show();
-  delay(space);
-
-  strip.fill(bd, 7);
-  strip.show();
-  delay(space);
-
-  strip.fill(bd, 6);
-  strip.show();
-  delay(space);
-
+  
   strip.fill(rd, 5);
   strip.show();
-  delay(space);
+  delay(space*2);
 
-  strip.fill(rd, 4);
+  strip.fill(bd, 4);
   strip.show();
   delay(space);
 
-  strip.fill(rd, 3);
+  strip.fill(bd, 3);
   strip.show();
   delay(space);
 
-  strip.fill(rd, 2);
+  strip.fill(bd, 2);
   strip.show();
   delay(space);
 
-  strip.fill(rd, 1);
+  strip.fill(bd, 1);
   strip.show();
   delay(space);
 
-  strip.fill(rd);
+  strip.fill(bd);
   strip.show();
   delay(space);
-  //---------------------------
+
   strip.fill(wd);
   strip.show();
-  delay(space * 2);
-  //----------------------------
-  strip.clear();
-  strip.fill(rd);
+  delay(space);
+
+  strip.fill(bd, 1);
   strip.show();
   delay(space);
 
-  strip.fill(rd, 1);
+  strip.fill(bd, 2);
   strip.show();
   delay(space);
 
-  strip.clear();
-  strip.fill(rd, 2);
+  strip.fill(bd, 3);
   strip.show();
   delay(space);
 
-  strip.fill(rd, 3);
-  strip.show();
-  delay(space);
-
-  strip.clear();
-  strip.fill(rd, 4);
+  strip.fill(bd, 4);
   strip.show();
   delay(space);
 
   strip.fill(rd, 5);
   strip.show();
-  delay(space);
-
-  strip.clear();
-  strip.fill(bd, 6);
-  strip.show();
-  delay(space);
-
-  strip.clear();
-  strip.fill(bd, 7);
-  strip.show();
-  delay(space);
-
-  strip.clear();
-  strip.fill(bd, 8);
-  strip.show();
-  delay(space);
-
-  strip.clear();
-  strip.fill(bd, 9);
-  strip.show();
-  delay(space);
-
-  strip.clear();
-  strip.fill(bd, 10);
-  strip.show();
-  delay(space);
-
-  strip.clear();
-  strip.fill(bd, 11);
-  strip.show();
-  delay(space);
-
-  strip.clear();
-  strip.fill(bd, 12);
-  strip.show();
-  delay(space);
-
-  strip.clear();
-  strip.fill(bd, 13);
-  strip.show();
-  delay(space);
-
-  strip.clear();
-  strip.fill(gd, 14);
-  strip.show();
-  delay(space);
-
-  strip.clear();
-  strip.fill(gd, 15);
-  strip.show();
-  delay(space);
+  delay(space*2);
 
   strip.fill(o);
   strip.show();
