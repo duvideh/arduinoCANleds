@@ -241,7 +241,7 @@ void leds(void) {
     ledStatus = 0;
   }
 
-  if (vehicleRPM >= (RPMno + 500) && vehicleRPM < (RPMno + 750) )
+  if (vehicleRPM >= (RPMno + 500) && vehicleRPM < (RPMno + 1000) )
   { //strip.fill(rb);
   strip.setPixelColor(0,rb);
   strip.setPixelColor(1,rb);
@@ -253,17 +253,17 @@ void leds(void) {
   ledStatus = 1;
   }
 
-  if (vehicleRPM >= (RPMno + 750) && vehicleRPM < (RPMno + 1000) )
-  {
-  strip.setPixelColor(0,b);
-  strip.setPixelColor(1,b);
-  strip.setPixelColor(3,b);
-  strip.setPixelColor(4,b);
-  strip.setPixelColor(5,b);
-  strip.setPixelColor(6,b);
-  strip.setPixelColor(7,b);
-  ledStatus = 2;
-  }
+  // if (vehicleRPM >= (RPMno + 750) && vehicleRPM < (RPMno + 1000) )
+  // {
+  // strip.setPixelColor(0,b);
+  // strip.setPixelColor(1,b);
+  // strip.setPixelColor(3,b);
+  // strip.setPixelColor(4,b);
+  // strip.setPixelColor(5,b);
+  // strip.setPixelColor(6,b);
+  // strip.setPixelColor(7,b);
+  // ledStatus = 2;
+  // }
 
   if (vehicleRPM >= (RPMno + 1000) && vehicleRPM < (RPMno + 1500))
   {strip.fill(b);
@@ -287,28 +287,28 @@ void leds(void) {
 
 void ledsDimmed(void)  {
 
-  if (vehicleRPM > 0 && vehicleRPM < (RPMno + 750) )
+  if (vehicleRPM > 0 && vehicleRPM < (RPMno + 500) )
   {
     strip.fill(o);
     ledStatus = 0;
   }
 
-  if (vehicleRPM >= (RPMno + 500) && vehicleRPM < (RPMno + 750) )
+  if (vehicleRPM >= (RPMno + 500) && vehicleRPM < (RPMno + 1000) )
   { strip.fill(rd);
   ledStatus = 1;
   }
 
-  if (vehicleRPM >= (RPMno + 750) && vehicleRPM < (RPMno + 1000) )
-  {
-  strip.setPixelColor(0,bd);
-  strip.setPixelColor(1,bd);
-  strip.setPixelColor(3,bd);
-  strip.setPixelColor(4,bd);
-  strip.setPixelColor(5,bd);
-  strip.setPixelColor(6,bd);
-  strip.setPixelColor(7,bd);
-  ledStatus = 2;
-  }
+  // if (vehicleRPM >= (RPMno + 750) && vehicleRPM < (RPMno + 1000) )
+  // {
+  // strip.setPixelColor(0,bd);
+  // strip.setPixelColor(1,bd);
+  // strip.setPixelColor(3,bd);
+  // strip.setPixelColor(4,bd);
+  // strip.setPixelColor(5,bd);
+  // strip.setPixelColor(6,bd);
+  // strip.setPixelColor(7,bd);
+  // ledStatus = 2;
+  // }
 
   if (vehicleRPM >= (RPMno + 1000) && vehicleRPM < (RPMno + 1500) )
   {strip.setPixelColor(0,wd);
@@ -341,18 +341,18 @@ void ledStartup(void)
   
   strip.fill(rd);
   strip.show();
-  delay(space*2);
+  delay(space*5);
 
-  strip.clear();
-  strip.setPixelColor(0,bd);
-  strip.setPixelColor(1,bd);
-  strip.setPixelColor(3,bd);
-  strip.setPixelColor(4,bd);
-  strip.setPixelColor(5,bd);
-  strip.setPixelColor(6,bd);
-  strip.setPixelColor(7,bd);
-  strip.show();
-  delay(space*2);
+  // strip.clear();
+  // strip.setPixelColor(0,bd);
+  // strip.setPixelColor(1,bd);
+  // strip.setPixelColor(3,bd);
+  // strip.setPixelColor(4,bd);
+  // strip.setPixelColor(5,bd);
+  // strip.setPixelColor(6,bd);
+  // strip.setPixelColor(7,bd);
+  // strip.show();
+  // delay(space*2);
   
   strip.clear();
   strip.setPixelColor(0,wd);
@@ -363,67 +363,72 @@ void ledStartup(void)
   strip.setPixelColor(6,wd);
   strip.setPixelColor(7,wd);
   strip.show();
-  delay(space);
+  delay(space*5);
   
-  strip.clear();
-  strip.setPixelColor(0,bd);
-  strip.setPixelColor(1,bd);
-  strip.setPixelColor(3,bd);
-  strip.setPixelColor(4,bd);
-  strip.setPixelColor(5,bd);
-  strip.setPixelColor(6,bd);
-  strip.setPixelColor(7,bd);
-  strip.show();
-  delay(space);
-  
-  strip.clear();
-  strip.setPixelColor(0,wd);
-  strip.setPixelColor(1,wd);
-  strip.setPixelColor(3,wd);
-  strip.setPixelColor(4,wd);
-  strip.setPixelColor(5,wd);
-  strip.setPixelColor(6,wd);
-  strip.setPixelColor(7,wd);
-  strip.show();
-  delay(space);
-
-  strip.clear();
-  strip.setPixelColor(0,bd);
-  strip.setPixelColor(1,bd);
-  strip.setPixelColor(3,bd);
-  strip.setPixelColor(4,bd);
-  strip.setPixelColor(5,bd);
-  strip.setPixelColor(6,bd);
-  strip.setPixelColor(7,bd);
-  strip.show();
-  delay(space);
-
-  strip.clear();
-  strip.setPixelColor(0,wd);
-  strip.setPixelColor(1,wd);
-  strip.setPixelColor(3,wd);
-  strip.setPixelColor(4,wd);
-  strip.setPixelColor(5,wd);
-  strip.setPixelColor(6,wd);
-  strip.setPixelColor(7,wd);
-  strip.show();
-  delay(space);
-
-  strip.clear();
-  strip.setPixelColor(0,bd);
-  strip.setPixelColor(1,bd);
-  strip.setPixelColor(3,bd);
-  strip.setPixelColor(4,bd);
-  strip.setPixelColor(5,bd);
-  strip.setPixelColor(6,bd);
-  strip.setPixelColor(7,bd);
-  strip.show();
-  delay(space*2);
-
   strip.clear();
   strip.fill(rd);
   strip.show();
-  delay(space*2);
+  delay(space*5);
+
+  // strip.clear();
+  // strip.setPixelColor(0,bd);
+  // strip.setPixelColor(1,bd);
+  // strip.setPixelColor(3,bd);
+  // strip.setPixelColor(4,bd);
+  // strip.setPixelColor(5,bd);
+  // strip.setPixelColor(6,bd);
+  // strip.setPixelColor(7,bd);
+  // strip.show();
+  // delay(space);
+  
+  strip.clear();
+  strip.setPixelColor(0,wd);
+  strip.setPixelColor(1,wd);
+  strip.setPixelColor(3,wd);
+  strip.setPixelColor(4,wd);
+  strip.setPixelColor(5,wd);
+  strip.setPixelColor(6,wd);
+  strip.setPixelColor(7,wd);
+  strip.show();
+  delay(space*5);
+
+  // strip.clear();
+  // strip.setPixelColor(0,bd);
+  // strip.setPixelColor(1,bd);
+  // strip.setPixelColor(3,bd);
+  // strip.setPixelColor(4,bd);
+  // strip.setPixelColor(5,bd);
+  // strip.setPixelColor(6,bd);
+  // strip.setPixelColor(7,bd);
+  // strip.show();
+  // delay(space);
+
+  // strip.clear();
+  // strip.setPixelColor(0,wd);
+  // strip.setPixelColor(1,wd);
+  // strip.setPixelColor(3,wd);
+  // strip.setPixelColor(4,wd);
+  // strip.setPixelColor(5,wd);
+  // strip.setPixelColor(6,wd);
+  // strip.setPixelColor(7,wd);
+  // strip.show();
+  // delay(space);
+
+  // strip.clear();
+  // strip.setPixelColor(0,bd);
+  // strip.setPixelColor(1,bd);
+  // strip.setPixelColor(3,bd);
+  // strip.setPixelColor(4,bd);
+  // strip.setPixelColor(5,bd);
+  // strip.setPixelColor(6,bd);
+  // strip.setPixelColor(7,bd);
+  // strip.show();
+  // delay(space*2);
+
+  // strip.clear();
+  // strip.fill(rd);
+  // strip.show();
+  // delay(space*2);
 
   strip.fill(o);
   strip.show();
