@@ -54,8 +54,8 @@ int previousledStatus = 0;
 int space = 100; //delay for led startup sequence
 
 //headlight circuit
-#define headlights 2
-#define headlightSignal 10
+#define headlights 5      //input from radio wire
+#define headlightSignal 10 //output wire to MEGA
 bool val = 1;
 bool dimmerOutput = 0;
 
@@ -88,8 +88,8 @@ void setup()
   ledStartup();
 
   //assign I/O for headlights
-  pinMode(headlights, INPUT_PULLUP); //input from radio wire
-  pinMode(headlightSignal, OUTPUT); //output wire to MEGA
+  pinMode(headlights, INPUT_PULLUP); 
+  pinMode(headlightSignal, OUTPUT); 
 
 
   //setup the CANBus module
