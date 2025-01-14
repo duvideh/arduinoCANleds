@@ -1,8 +1,8 @@
-
-//RPM Shift Lights using an MCP2515 CAN bus board.
-//Adafruit NeoPixel LED Sticks, two 8-led RGBW warm-white sticks.
+//RPM Shift Lights using an MCP2515 CAN bus board
+//Adafruit NeoPixel LED Sticks, two 8-led RGBW warm-white sticks
 //NeoPixel codes is (#,#,#,#,#) = (numberOfLed,Red,Green,Blue,White) numberOfLed = 0-15, Color is in brightness 0-255
-//4N25 Opto-coupler input for dimming. 12v on diode side, ground on switch.
+//4N25 Opto-coupler input for dimming. 12v on diode side, ground on switch
+//Sending can data to Arduino MEGA via SoftwareSerial
 
 #include <arduino.h>
 //#include <mcp2515.h> old
@@ -85,6 +85,8 @@ void setup()
   strip.fill(o);
   strip.show();
 
+  delay(1000); //startup delay, prevent lightup sequence before engine start
+
   ledStartup();
 
   //assign I/O for headlights
@@ -93,21 +95,19 @@ void setup()
 
 
   //setup the CANBus module
-  //mcp2515.reset();
-  //mcp2515.setBitrate(CAN_500KBPS, MCP_16MHZ);
-  //mcp2515.setListenOnlyMode();
   if(CAN0.begin(MCP_STDEXT, CAN_500KBPS, MCP_16MHZ) == CAN_OK) Serial.print("MCP2515 Init Okay!!\r\n");
   else Serial.print("MCP2515 Init Failed!!\r\n");
   CAN0.init_Mask(0,0,0x010F0000);                // Init first mask...
   CAN0.init_Filt(0,0,0x140);                // Init first filter...
   CAN0.init_Filt(1,0,0x360);                // Init second filter...
   
-  CAN0.setMode(MCP_NORMAL);         // Change to normal mode to allow messages to be transmitted
+  CAN0.setMode(MCP_LISTENONLY);         //listen only mode - cannot transmit messages
 
   softSerial.begin(9600);
   Serial.begin(9600);
   
   millisStart = millis();
+  millisTwo = millis();
 }
 
 
@@ -121,21 +121,13 @@ void setup()
 void loop()
 {
   //get CAN Message
-  //if ((mcp2515.readMessage(&canMsg) == MCP2515::ERROR_OK)) {
-    getMessage();
-  //}
+  getMessage();
   if(millis() >= millisTwo + 1) {
     strip.clear();
     dimmer();
     if (ledStatus != previousledStatus ) {
       strip.show();
     }
-   // if (dimmerOutput == 1) {
-   //   digitalWrite(headlightSignal,HIGH);
-   // }
-   // else {
-   //  digitalWrite(headlightSignal,LOW);
-   // }
    previousledStatus = ledStatus;
   }
 
@@ -171,38 +163,18 @@ void loop()
 //| (_| |  __/ |_| |  | |_) | | | | | |
 // \__, |\___|\__|_|  | .__/|_| |_| |_|
 // |___/              |_|
-
-void getMessage (void) {           //formerly getRPM
+//
+void getMessage (void) {           
   CAN0.readMsgBuf(&rxId, &len, rxBuf); // Read data: len = data length, buf = data byte(s)
   if (rxId == 0x140) {
     ex = rxBuf[2];
     why = rxBuf[3];
     vehicleRPM = (why & 0x3f) * 256 + ex;
-  }
+    }
   if (rxId == 0x360) {
     oilTemp = (rxBuf[2]) - 40;
     coolant = (rxBuf[3]) - 40;    
-  }
-  
-  
-  
-  
-  // if (canMsg.can_id == 0x140) {
-  //  ex = canMsg.data[2];
-  //  why = canMsg.data[3];
-  //  //combine the 2 digit hex for field 2 and field 3 to get decimal rpm
-  //  vehicleRPM = (why & 0x3f) * 256 + ex;
-  //Serial.print("RPM: ");
-  //Serial.println(vehicleRPM);
-  //}
-  // if (canMsg.can_id == 0x360) {
-  //   oilTemp = (canMsg.data[2]) - 40;
-  //   coolant = (canMsg.data[3]) - 40;
-  //   //Serial.println("Oil:");
-  //   //Serial.println(oilTemp);
-  //   //Serial.println("Coolant:");
-  //   //Serial.println(coolant);
-  // }
+    }
 }
 
 //     _ _
@@ -210,18 +182,16 @@ void getMessage (void) {           //formerly getRPM
 // / _` | | '_ ` _ \| '_ ` _ \ / _ \ '__|
 //| (_| | | | | | | | | | | | |  __/ |
 // \__,_|_|_| |_| |_|_| |_| |_|\___|_|
-
+//
 void dimmer (void) {
 
   val = digitalRead(headlights);
   if (val == HIGH) {
     leds();
-    //dimmerOutput = 0;
     digitalWrite(headlightSignal,LOW);
   }
   else {
     ledsDimmed();
-    //dimmerOutput = 1;
     digitalWrite(headlightSignal,HIGH);
   }
 }
@@ -232,7 +202,7 @@ void dimmer (void) {
 // | |/ _ \/ _` / __|
 // | |  __/ (_| \__ \ '/' 
 // |_|\___|\__,_|___/  font = ogre
-
+//
 void leds(void) {
 
   if (vehicleRPM > 0 && vehicleRPM < (RPMno + 500) )
@@ -241,7 +211,7 @@ void leds(void) {
     ledStatus = 0;
   }
 
-  if (vehicleRPM >= (RPMno + 500) && vehicleRPM < (RPMno + 1000) )
+  else if (vehicleRPM >= (RPMno + 500) && vehicleRPM < (RPMno + 1000) )
   { //strip.fill(rb);
   strip.setPixelColor(0,rb);
   strip.setPixelColor(1,rb);
@@ -253,26 +223,14 @@ void leds(void) {
   ledStatus = 1;
   }
 
-  // if (vehicleRPM >= (RPMno + 750) && vehicleRPM < (RPMno + 1000) )
-  // {
-  // strip.setPixelColor(0,b);
-  // strip.setPixelColor(1,b);
-  // strip.setPixelColor(3,b);
-  // strip.setPixelColor(4,b);
-  // strip.setPixelColor(5,b);
-  // strip.setPixelColor(6,b);
-  // strip.setPixelColor(7,b);
-  // ledStatus = 2;
-  // }
-
-  if (vehicleRPM >= (RPMno + 1000) && vehicleRPM < (RPMno + 1500))
+  else if (vehicleRPM >= (RPMno + 1000) && vehicleRPM < (RPMno + 1500))
   {strip.fill(b);
   strip.setPixelColor(0,wb);
   strip.setPixelColor(1,wb);
   ledStatus = 3;
   }
 
-  if (vehicleRPM > 10000)
+  else if (vehicleRPM > 10000)
   {
     strip.fill(o);
     ledStatus = 4;
@@ -284,7 +242,7 @@ void leds(void) {
 // | |/ _ \/ _` / __| / /\ / | '_ ` _ \| '_ ` _ \ / _ \/ _` |
 // | |  __/ (_| \__ \/ /_//| | | | | | | | | | | |  __/ (_| |
 // |_|\___|\__,_|___/___,' |_|_| |_| |_|_| |_| |_|\___|\__,_|
-
+//
 void ledsDimmed(void)  {
 
   if (vehicleRPM > 0 && vehicleRPM < (RPMno + 500) )
@@ -293,24 +251,12 @@ void ledsDimmed(void)  {
     ledStatus = 0;
   }
 
-  if (vehicleRPM >= (RPMno + 500) && vehicleRPM < (RPMno + 1000) )
+  else if (vehicleRPM >= (RPMno + 500) && vehicleRPM < (RPMno + 1000) )
   { strip.fill(rd);
   ledStatus = 1;
   }
 
-  // if (vehicleRPM >= (RPMno + 750) && vehicleRPM < (RPMno + 1000) )
-  // {
-  // strip.setPixelColor(0,bd);
-  // strip.setPixelColor(1,bd);
-  // strip.setPixelColor(3,bd);
-  // strip.setPixelColor(4,bd);
-  // strip.setPixelColor(5,bd);
-  // strip.setPixelColor(6,bd);
-  // strip.setPixelColor(7,bd);
-  // ledStatus = 2;
-  // }
-
-  if (vehicleRPM >= (RPMno + 1000) && vehicleRPM < (RPMno + 1500) )
+  else if (vehicleRPM >= (RPMno + 1000) && vehicleRPM < (RPMno + 1500) )
   {strip.setPixelColor(0,wd);
   strip.setPixelColor(1,wd);
   strip.setPixelColor(3,wd);
@@ -321,7 +267,7 @@ void ledsDimmed(void)  {
   ledStatus = 3;
   }
 
-  if (vehicleRPM > 10000)
+  else if (vehicleRPM > 10000)
   {
     strip.fill(o);
     ledStatus = 4;
@@ -342,17 +288,6 @@ void ledStartup(void)
   strip.fill(rd);
   strip.show();
   delay(space*5);
-
-  // strip.clear();
-  // strip.setPixelColor(0,bd);
-  // strip.setPixelColor(1,bd);
-  // strip.setPixelColor(3,bd);
-  // strip.setPixelColor(4,bd);
-  // strip.setPixelColor(5,bd);
-  // strip.setPixelColor(6,bd);
-  // strip.setPixelColor(7,bd);
-  // strip.show();
-  // delay(space*2);
   
   strip.clear();
   strip.setPixelColor(0,wd);
@@ -369,17 +304,6 @@ void ledStartup(void)
   strip.fill(rd);
   strip.show();
   delay(space*5);
-
-  // strip.clear();
-  // strip.setPixelColor(0,bd);
-  // strip.setPixelColor(1,bd);
-  // strip.setPixelColor(3,bd);
-  // strip.setPixelColor(4,bd);
-  // strip.setPixelColor(5,bd);
-  // strip.setPixelColor(6,bd);
-  // strip.setPixelColor(7,bd);
-  // strip.show();
-  // delay(space);
   
   strip.clear();
   strip.setPixelColor(0,wd);
@@ -391,44 +315,6 @@ void ledStartup(void)
   strip.setPixelColor(7,wd);
   strip.show();
   delay(space*5);
-
-  // strip.clear();
-  // strip.setPixelColor(0,bd);
-  // strip.setPixelColor(1,bd);
-  // strip.setPixelColor(3,bd);
-  // strip.setPixelColor(4,bd);
-  // strip.setPixelColor(5,bd);
-  // strip.setPixelColor(6,bd);
-  // strip.setPixelColor(7,bd);
-  // strip.show();
-  // delay(space);
-
-  // strip.clear();
-  // strip.setPixelColor(0,wd);
-  // strip.setPixelColor(1,wd);
-  // strip.setPixelColor(3,wd);
-  // strip.setPixelColor(4,wd);
-  // strip.setPixelColor(5,wd);
-  // strip.setPixelColor(6,wd);
-  // strip.setPixelColor(7,wd);
-  // strip.show();
-  // delay(space);
-
-  // strip.clear();
-  // strip.setPixelColor(0,bd);
-  // strip.setPixelColor(1,bd);
-  // strip.setPixelColor(3,bd);
-  // strip.setPixelColor(4,bd);
-  // strip.setPixelColor(5,bd);
-  // strip.setPixelColor(6,bd);
-  // strip.setPixelColor(7,bd);
-  // strip.show();
-  // delay(space*2);
-
-  // strip.clear();
-  // strip.fill(rd);
-  // strip.show();
-  // delay(space*2);
 
   strip.fill(o);
   strip.show();
